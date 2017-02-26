@@ -1,13 +1,19 @@
-FROM ubuntu
+FROM kelvinrr/ubuntu
 
 MAINTAINER Kelvin Rodriguez <kr788@nau.edu>
 
-# Install MongoDB 3.0
+ENV MONGO_MAJOR 3.4
+ENV MONGO_VERSION 3.4.7
+
 RUN DEBIAN_FRONTEND=noninteractive && \
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
-    echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list && \
+    echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/$MONGO_MAJOR multiverse" > /etc/apt/sources.list.d/mongodb-org-$MONGO_MAJOR.list && \
     apt-get update && \
-    apt-get install -y --force-yes mongodb-org=3.0.7 mongodb-org-server=3.0.7 mongodb-org-shell=3.0.7 mongodb-org-mongos=3.0.7 mongodb-org-tools=3.0.7 && \
+    apt-get install -y mongodb-org=$MONGO_VERSION          \
+                       mongodb-org-server=$MONGO_VERSION   \
+                       mongodb-org-shell=$MONGO_VERSION    \
+                       mongodb-org-mongos=$MONGO_VERSION   \
+                       mongodb-org-tools=$MONGO_VERSION && \
     service mongod stop && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
