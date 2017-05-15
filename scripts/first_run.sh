@@ -2,6 +2,7 @@
 USER=${MONGODB_USERNAME:-mongo}
 PASS=${MONGODB_PASSWORD:-$(pwgen -s -1 16)}
 DB=${MONGODB_DBNAME:-admin}
+
 if [ ! -z "$MONGODB_DBNAME" ]
 then
     ROLE=${MONGODB_ROLE:-dbOwner}
@@ -9,8 +10,15 @@ else
     ROLE=${MONGODB_ROLE:-dbAdminAnyDatabase}
 fi
 
-# Start MongoDB service
-/usr/bin/mongod --dbpath /data --journal &
+# Check for NUMA machine and start MongoDB service
+# if [[`numactl --hardware | head -1 | cut -b 12` != '1']]; then
+numactl --interleave=all /usr/bin/mongod --dbpath /data --rest --httpinterface --journal $@
+
+# else
+  # mongod --dbpath /data --rest --httpinterface --journal $@;
+# fi
+
+# numactl --interleave=all mongod --dbpath /data --rest --httpinterface --journal $@
 while ! nc -vz localhost 27017; do sleep 1; done
 
 # Create User

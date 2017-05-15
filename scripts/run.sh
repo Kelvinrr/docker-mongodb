@@ -7,4 +7,7 @@ fi
 
 # Start MongoDB
 echo "Starting MongoDB..."
-/usr/bin/mongod --dbpath /data $@
+
+# mongod --rest --httpinterface --dbpath /data $@
+
+numactl --interleave=all mongod --rest --httpinterface --dbpath /data $@
