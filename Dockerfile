@@ -50,6 +50,7 @@ RUN chmod +x /scripts/*.sh
 RUN touch /.firstrun
 
 # Command to run
+RUN mkdir -p /data && chown -R mongodb:mongodb /data
 ENTRYPOINT ["/scripts/run.sh"]
 CMD [""]
 
@@ -58,5 +59,5 @@ EXPOSE 27017
 EXPOSE 28017
 
 # Expose our data volumes
-RUN mkdir -p /data && chown -R mongodb:mongodb /data
+
 VOLUME ["/data"]
