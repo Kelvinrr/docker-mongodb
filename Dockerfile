@@ -3,7 +3,7 @@ FROM kelvinrr/ubuntu
 MAINTAINER Kelvin Rodriguez <kr788@nau.edu>
 
 # explicitly set user/group IDs
-RUN groupadd -r mongodb && useradd -r -g mongodb mongodb && usermod -aG sudo mongodb
+RUN groupadd -r mongodb --gid=999 && useradd -r -g mongodb --uid=999 mongodb
 
 ENV MONGO_MAJOR 3.4
 ENV MONGO_VERSION 3.4.2
@@ -60,5 +60,3 @@ EXPOSE 28017
 # Expose our data volumes
 RUN mkdir -p /data && chown -R mongodb:mongodb /data
 VOLUME ["/data"]
-
-USER mongodb
