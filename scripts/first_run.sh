@@ -12,7 +12,11 @@ fi
 
 # Check for NUMA machine and start MongoDB service
 # if [[`numactl --hardware | head -1 | cut -b 12` != '1']]; then
-numactl --interleave=all /usr/bin/mongod --dbpath /data --rest --httpinterface --journal $@
+
+
+chown -R mongodb /data
+chmod 777 /data
+gosu mongodb numactl --interleave=all /usr/bin/mongod --dbpath /data --rest --httpinterface --journal $@
 
 # else
   # mongod --dbpath /data --rest --httpinterface --journal $@;

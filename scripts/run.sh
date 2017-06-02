@@ -10,4 +10,4 @@ echo "Starting MongoDB..."
 
 # mongod --rest --httpinterface --dbpath /data $@
 
-numactl --interleave=all mongod --rest --httpinterface --dbpath /data $@
+gosu mongodb numactl --interleave=all mongod --rest --httpinterface --dbpath /data $@
